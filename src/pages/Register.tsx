@@ -2,17 +2,15 @@ import React, { FormEvent, useState } from "react";
 import { useRegisterMutation } from "../generated/graphql";
 import { RouteComponentProps } from "react-router-dom";
 
-const Register: React.FC<RouteComponentProps> = ({
-    history
-  }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
+const Register: React.FC<RouteComponentProps> = ({ history }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [register] = useRegisterMutation();
-  
+
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    
+
     try {
       const response = await register({
         variables: {
@@ -21,7 +19,7 @@ const Register: React.FC<RouteComponentProps> = ({
           username
         }
       });
-      
+
       console.log(response);
       // TODO: Check if response is a success and display a success message
       history.push("/");
@@ -29,7 +27,7 @@ const Register: React.FC<RouteComponentProps> = ({
       console.error("REGISTRATION: ", err);
     }
   };
-  
+
   return (
     <form onSubmit={onSubmit}>
       <div>
@@ -37,7 +35,7 @@ const Register: React.FC<RouteComponentProps> = ({
           type="text"
           value={email}
           placeholder="user@email.com"
-          onChange={e => setEmail(e.target.value) }
+          onChange={e => setEmail(e.target.value)}
         />
       </div>
 
@@ -45,21 +43,21 @@ const Register: React.FC<RouteComponentProps> = ({
         <input
           type="password"
           value={password}
-          onChange={e => setPassword(e.target.value) }
+          onChange={e => setPassword(e.target.value)}
         />
       </div>
-  
+
       <div>
         <input
           type="text"
           value={username}
-          onChange={e => setUsername(e.target.value) }
+          onChange={e => setUsername(e.target.value)}
         />
       </div>
-      
+
       <button type="submit">Create account</button>
     </form>
-  )
+  );
 };
 
 export default Register;

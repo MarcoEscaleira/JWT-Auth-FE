@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Routes from "./Routes";
-import { setAccessToken } from "./accessToken";
-import { UnaryFn } from "./utils/functionsTypes";
-import { refreshAccessToken } from "./requests/login";
+import React, { useEffect, useState } from 'react';
+import Routes from './Routes';
+import { setAccessToken } from './accessToken';
+import { UnaryFn } from './utils/functionsTypes';
+import { refreshAccessToken } from './requests/login';
 
 const refreshUserAccessToken = (setLoading: UnaryFn<boolean, void>): void => {
     refreshAccessToken()
@@ -14,7 +14,7 @@ const refreshUserAccessToken = (setLoading: UnaryFn<boolean, void>): void => {
           setAccessToken(accessToken);
         }
       } catch (err) {
-        console.error("Refreshing Token: ", err);
+        console.error('Refreshing Token: ', err);
       }
       setLoading(false);
     });

@@ -1,19 +1,17 @@
 import React, { FormEvent, useState } from "react";
-import { get } from 'lodash';
+import { get } from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
 import { setAccessToken } from "../accessToken";
 
-const Register: React.FC<RouteComponentProps> = ({
-   history
-  }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const Register: React.FC<RouteComponentProps> = ({ history }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [login] = useLoginMutation();
-  
+
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    
+
     try {
       const response = await login({
         variables: {
@@ -31,6 +29,7 @@ const Register: React.FC<RouteComponentProps> = ({
               me: data.login.user
             }
           });
+          return undefined;
         }
       });
       console.log(response);
@@ -42,7 +41,7 @@ const Register: React.FC<RouteComponentProps> = ({
       console.error("LOGIN: ", err);
     }
   };
-  
+
   return (
     <form onSubmit={onSubmit}>
       <div>
@@ -50,21 +49,21 @@ const Register: React.FC<RouteComponentProps> = ({
           type="text"
           value={email}
           placeholder="user@email.com"
-          onChange={e => setEmail(e.target.value) }
+          onChange={e => setEmail(e.target.value)}
         />
       </div>
-      
+
       <div>
         <input
           type="password"
           value={password}
-          onChange={e => setPassword(e.target.value) }
+          onChange={e => setPassword(e.target.value)}
         />
       </div>
-      
+
       <button type="submit">Login</button>
     </form>
-  )
+  );
 };
 
 export default Register;

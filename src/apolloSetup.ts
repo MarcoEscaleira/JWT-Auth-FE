@@ -1,14 +1,14 @@
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloLink, Observable } from "apollo-link";
-import { ApolloClient } from "apollo-client";
-import { onError } from "apollo-link-error";
-import { HttpLink } from "apollo-link-http";
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloLink, Observable } from 'apollo-link';
+import { ApolloClient } from 'apollo-client';
+import { onError } from 'apollo-link-error';
+import { HttpLink } from 'apollo-link-http';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import jwtDecode from 'jwt-decode';
 
-import { GRAPHQL_URL } from "./constants/hosts";
-import { getAccessToken, setAccessToken } from "./accessToken";
-import { refreshAccessToken } from "./requests/login";
+import { GRAPHQL_URL } from './constants/hosts';
+import { getAccessToken, setAccessToken } from './accessToken';
+import { refreshAccessToken } from './requests/login';
 
 const cache = new InMemoryCache();
 
@@ -44,7 +44,7 @@ const requestLink = new ApolloLink((operation, forward) =>
 const client = new ApolloClient({
   link: ApolloLink.from([
     new TokenRefreshLink({
-      accessTokenField: "accessToken",
+      accessTokenField: 'accessToken',
       isTokenValidOrUndefined: () => {
         const token = getAccessToken();
         if (!token) {
@@ -57,9 +57,7 @@ const client = new ApolloClient({
           return false;
         }
       },
-      fetchAccessToken: () => {
-        return refreshAccessToken();
-      },
+      fetchAccessToken: () => refreshAccessToken(),
       handleFetch: accessToken => {
         setAccessToken(accessToken);
       },
