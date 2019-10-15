@@ -2,14 +2,11 @@ import React from "react";
 import { useUsersQuery } from "../generated/graphql";
 
 const Home: React.FC = () => {
-  const { data, loading } = useUsersQuery({
-    // TODO: Not looking on cache, forcing request to be will always done
-    fetchPolicy: "network-only"
-  });
+  const { data, loading } = useUsersQuery();
   return (
     <div>
       <h1>Home page</h1>
-      {!data && loading ? (
+      {loading ? (
         <div>loading users...</div>
       ) : (
         <div>

@@ -62,23 +62,12 @@ module.exports = {
     "arrow-parens": [2, "as-needed"],
     "arrow-spacing": ["error", { "before": true, "after": true }],
     "arrow-body-style": [2, "as-needed"],
-    "no-extra-parens": [
-      "warn",
-      "all",
-      {
-        "conditionalAssign": false,
-        "nestedBinaryExpressions": false,
-        "ignoreJSX": "all",
-        "enforceForArrowConditionals": false
-      }
-    ],
     "no-param-reassign": 0,
     "prefer-template": 0,
     "prefer-promise-reject-errors": 0,
     "no-script-url": 0,
     "no-unused-expressions": 0,
     // "dot-notation": 0,
-
     "import/prefer-default-export": 0,
     "import/no-useless-path-segments": 1,
     "import/no-unresolved": 0,

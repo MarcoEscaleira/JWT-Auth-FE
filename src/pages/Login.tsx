@@ -1,10 +1,22 @@
 import React, { FormEvent, useState } from "react";
 import { get } from "lodash";
+import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
-import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
+import { useLoginMutation, User } from "../generated/graphql";
 import { setAccessToken } from "../accessToken";
+import { actions } from "../store/user";
+import { Dispatch } from "redux";
+import { UnaryFn } from "../utils/functionsTypes";
 
-const Register: React.FC<RouteComponentProps> = ({ history }) => {
+interface Props {
+  loginUser: UnaryFn<User, void>;
+}
+
+const Login: React.FC<RouteComponentProps & Props> = ({
+  history,
+  loginUser
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login] = useLoginMutation();
@@ -13,32 +25,25 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
     event.preventDefault();
 
     try {
+      setIsLoading(true);
       const response = await login({
         variables: {
           email,
           password
-        },
-        update: (store, { data }) => {
-          // TODO: Substitute this when redux is available
-          if (!data) {
-            return null;
-          }
-          store.writeQuery<MeQuery>({
-            query: MeDocument,
-            data: {
-              me: data.login.user
-            }
-          });
-          return undefined;
         }
       });
-      console.log(response);
+
       if (get(response, "data")) {
         setAccessToken(get(response.data, "login.accessToken"));
+        loginUser(get(response.data, "login.user"));
+        setIsLoading(false);
+        // TODO: Show login success message
         history.push("/");
       }
     } catch (err) {
+      // TODO: Show login error message
       console.error("LOGIN: ", err);
+      setIsLoading(false);
     }
   };
 
@@ -61,9 +66,18 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
         />
       </div>
 
-      <button type="submit">Login</button>
+      {isLoading ? <div>loading...</div> : <button type="submit">Login</button>}
     </form>
   );
 };
 
-export default Register;
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  loginUser: (user: User) => {
+    dispatch(actions.loginUserAction(user));
+  }
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

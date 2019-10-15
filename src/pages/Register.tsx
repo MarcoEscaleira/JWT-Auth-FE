@@ -20,10 +20,12 @@ const Register: React.FC<RouteComponentProps> = ({ history }) => {
         }
       });
 
-      console.log(response);
-      // TODO: Check if response is a success and display a success message
-      history.push("/");
+      if (response) {
+        // TODO: Show success message
+        history.push("/");
+      }
     } catch (err) {
+      // TODO: Show error message
       console.error("REGISTRATION: ", err);
     }
   };
