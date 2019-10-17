@@ -72,6 +72,7 @@ const Login: React.FC<RouteComponentProps & Props> = ({
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
+  dispatch: dispatch,
   loginUser: (user: User) => {
     dispatch(actions.loginUserAction(user));
   }

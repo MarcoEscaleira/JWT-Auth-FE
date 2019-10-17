@@ -1,17 +1,26 @@
 import React, { Fragment, useEffect } from "react";
 import { get } from "lodash";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 
-import { useLogoutMutation, useMeQuery, User } from "../generated/graphql";
-import { NullaryFn, UnaryFn } from "../utils/functionsTypes";
-import { setAccessToken } from "../accessToken";
+import { useLogoutMutation, useMeQuery, User } from "../../generated/graphql";
+import { NullaryFn, UnaryFn } from "../../utils/functionsTypes";
+import { setAccessToken } from "../../accessToken";
 import {
   selectors as userSelectors,
   actions as userActions
-} from "../store/user";
-import { UserDetails } from "../store/user/types";
+} from "../../store/user";
+import { UserDetails } from "../../store/user/types";
+import {
+  activeNavLink,
+  Container,
+  LogoWrapper,
+  MenuContainer,
+  MenuWrapper,
+  UserContainer
+} from "./styled-components";
+import logoPath from "../../assets/icon.png";
 
 interface Props {
   setFullPageLoading: UnaryFn<boolean, void>;
@@ -35,7 +44,7 @@ const handleLogoutUser = async (
   setFullPageLoading(false);
 };
 
-const Header: React.FC<Props> = ({
+const Index: React.FC<Props> = ({
   logoutUser,
   setFullPageLoading,
   loadUser,
@@ -56,9 +65,8 @@ const Header: React.FC<Props> = ({
   } else if (isUserLogged) {
     body = (
       <div>
-        You are logged in as:
+        Hello:
         <b>{get(userDetails, "email")}</b>-<span>{get(userDetails, "id")}</span>
-        <br />
         <button
           onClick={() =>
             handleLogoutUser(logout, logoutUser, setFullPageLoading)
@@ -69,22 +77,35 @@ const Header: React.FC<Props> = ({
       </div>
     );
   } else {
-    body = <div>You are logged out</div>;
+    body = <div>Hello stranger...</div>;
   }
 
   return (
-    <header>
-      <Link to="/">Home</Link>
-      {!isUserLogged && (
-        <Fragment>
-          &nbsp;
-          <Link to="/login">Login</Link>
-          &nbsp;
-          <Link to="/registration">Register</Link>
-        </Fragment>
-      )}
-      {body}
-    </header>
+    <Container>
+      <MenuContainer>
+        <LogoWrapper>
+          <img src={logoPath} alt="logo" width="100%" />
+        </LogoWrapper>
+        <MenuWrapper>
+          <NavLink exact to="/" activeStyle={activeNavLink}>
+            Home
+          </NavLink>
+          {!isUserLogged && (
+            <Fragment>
+              &nbsp;
+              <NavLink to="/login" activeStyle={activeNavLink}>
+                Login
+              </NavLink>
+              &nbsp;
+              <NavLink to="/registration" activeStyle={activeNavLink}>
+                Register
+              </NavLink>
+            </Fragment>
+          )}
+        </MenuWrapper>
+      </MenuContainer>
+      <UserContainer>{body}</UserContainer>
+    </Container>
   );
 };
 
@@ -105,4 +126,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Header);
+)(Index);
