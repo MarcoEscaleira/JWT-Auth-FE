@@ -29,6 +29,7 @@ export const LogoWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
 `;
+
 export const MenuWrapper = styled.div`
   display: flex;
   justify-content: flex-end;

@@ -20,7 +20,7 @@ import {
   MenuWrapper,
   UserContainer
 } from "./styled-components";
-import logoPath from "../../assets/icon.png";
+import logo from "../../assets/icon.png";
 
 interface Props {
   setFullPageLoading: UnaryFn<boolean, void>;
@@ -84,7 +84,7 @@ const Index: React.FC<Props> = ({
     <Container>
       <MenuContainer>
         <LogoWrapper>
-          <img src={logoPath} alt="logo" width="100%" />
+          <img src={logo} alt="logo" width="100%" />
         </LogoWrapper>
         <MenuWrapper>
           <NavLink exact to="/" activeStyle={activeNavLink}>
