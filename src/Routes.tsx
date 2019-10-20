@@ -21,7 +21,7 @@ const Routes: React.FC = () => {
   return (
     <BrowserRouter>
       <Fragment>
-        <Header setFullPageLoading={setLoading} />
+        <Header />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />

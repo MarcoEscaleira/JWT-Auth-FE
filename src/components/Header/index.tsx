@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from "react";
-import { get } from "lodash";
+import { get, noop } from "lodash";
 import { NavLink } from "react-router-dom";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -23,7 +23,6 @@ import {
 import logo from "../../assets/icon.png";
 
 interface Props {
-  setFullPageLoading: UnaryFn<boolean, void>;
   userDetails: UserDetails;
   isUserLogged: boolean;
   loadUser: UnaryFn<User, void>;
@@ -34,19 +33,16 @@ let body: any = null;
 
 const handleLogoutUser = async (
   logout: NullaryFn<void>,
-  logoutUser: NullaryFn<void>,
-  setFullPageLoading: UnaryFn<boolean, void>
+  logoutUser: NullaryFn<void>
 ) => {
-  setFullPageLoading(true); // TODO: This can be changed when a proper loading component is available
+  // TODO: Add a loading here
   await logout();
   setAccessToken("");
   logoutUser();
-  setFullPageLoading(false);
 };
 
-const Index: React.FC<Props> = ({
+const Header: React.FC<Props> = ({
   logoutUser,
-  setFullPageLoading,
   loadUser,
   userDetails,
   isUserLogged
@@ -58,7 +54,7 @@ const Index: React.FC<Props> = ({
     if (get(data, "me")) {
       loadUser(data!.me as User);
     }
-  }, [data, loading, logout, loadUser]);
+  }, [data, loading, loadUser]);
 
   if (loading) {
     body = <div>loading user details</div>;
@@ -67,11 +63,7 @@ const Index: React.FC<Props> = ({
       <div>
         Hello:
         <b>{get(userDetails, "email")}</b>-<span>{get(userDetails, "id")}</span>
-        <button
-          onClick={() =>
-            handleLogoutUser(logout, logoutUser, setFullPageLoading)
-          }
-        >
+        <button onClick={() => handleLogoutUser(logout, logoutUser)}>
           Logout
         </button>
       </div>
@@ -109,6 +101,17 @@ const Index: React.FC<Props> = ({
   );
 };
 
+Header.defaultProps = {
+  userDetails: {
+    id: null,
+    email: "",
+    username: ""
+  },
+  isUserLogged: false,
+  loadUser: noop,
+  logoutUser: noop
+};
+
 const mapStateToProps = (store: any) => ({
   userDetails: userSelectors.getUserDetails(store),
   isUserLogged: userSelectors.isLogged(store)
@@ -126,4 +129,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Index);
+)(Header);
