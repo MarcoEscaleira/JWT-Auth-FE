@@ -7,7 +7,6 @@ export const refreshUserAccessToken = (
 ): void => {
   refreshAccessToken().then(async result => {
     const { accessToken, ok } = await result.json();
-
     try {
       if (ok && ok === true && accessToken) {
         setAccessToken(accessToken);

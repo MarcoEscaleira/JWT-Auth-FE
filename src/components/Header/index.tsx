@@ -4,9 +4,9 @@ import { NavLink } from "react-router-dom";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 
+import { handleLogoutUser } from "../../utils/logout";
 import { useLogoutMutation, useMeQuery, User } from "../../generated/graphql";
 import { NullaryFn, UnaryFn } from "../../utils/functionsTypes";
-import { setAccessToken } from "../../accessToken";
 import {
   selectors as userSelectors,
   actions as userActions
@@ -30,16 +30,6 @@ interface Props {
 }
 
 let body: any = null;
-
-const handleLogoutUser = async (
-  logout: NullaryFn<void>,
-  logoutUser: NullaryFn<void>
-) => {
-  // TODO: Add a loading here
-  await logout();
-  setAccessToken("");
-  logoutUser();
-};
 
 const Header: React.FC<Props> = ({
   logoutUser,
